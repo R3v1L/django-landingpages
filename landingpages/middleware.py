@@ -31,8 +31,11 @@ class LandingPagesMiddleware(object):
             if path != '/':
                 path+='/'
             page=LandingPage.objects.get(url=request.path)
-            translation.activate(page.language)
-            return TemplateResponse(request,page.template,{'page': page})
+            if request.path[-1] != '/':
+                return redirect(path)
+            else:
+                translation.activate(page.language)
+                return TemplateResponse(request,page.template,{'page': page})
         except:
             return None
         
