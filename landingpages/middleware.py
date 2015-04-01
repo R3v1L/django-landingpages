@@ -27,6 +27,9 @@ class LandingPagesMiddleware(object):
         """
         try:
             # Search for a landing page with request path to show it if exists
+            path=request.path[-1]
+            if path != '/':
+                path+='/'
             page=LandingPage.objects.get(url=request.path)
             translation.activate(page.language)
             return TemplateResponse(request,page.template,{'page': page})
